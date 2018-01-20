@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <title>Draw Feature Example</title>
+
+    <link rel="stylesheet" href="http://dev.openlayers.org/theme/default/style.css" type="text/css">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <script src="http://dev.openlayers.org/OpenLayers.js"></script>
+    <script src="https://npmcdn.com/@turf/turf/turf.js"></script>
+    <script src="harita.js"></script>
+    <script src="download.js"></script>
+
+</head>
+<body >
+<div id="map"></div>
+<div class="buton1">
+    <input type="button" value="Doldur" onclick="deneme();">
+    <input type="button" value="GeoJSON İNDİR" onclick="geojsonindir();">
+    <input type="button" value="MsSQL İNDİR" onclick="sqlindir();">
+</div>
+</body>
+</html>
+<script src="mezarlikDoldu.js"></script>
+<script type="text/javascript">
+    var map, drawControls;
+
+    map = new OpenLayers.Map('map');
+
+    var wmsLayer = new OpenLayers.Layer.WMS( "OpenLayers WMS",
+        "http://vmap0.tiles.osgeo.org/wms/vmap0?", {layers: 'basic'});
+
+    var polygonLayer = new OpenLayers.Layer.Vector("Polygon Layer");
+
+    map.addLayers([wmsLayer,polygonLayer]);
+    map.addControl(new OpenLayers.Control.LayerSwitcher());
+    map.addControl(new OpenLayers.Control.MousePosition());
+
+
+
+    drawControls = {
+        polygon: new OpenLayers.Control.DrawFeature(polygonLayer,
+            OpenLayers.Handler.Polygon)
+    };
+
+    for(var key in drawControls) {
+        map.addControl(drawControls[key]);
+    }
+
+    map.setCenter(new OpenLayers.LonLat(30.17944,40.13855), 15);
+
+
+    function polygonCiz(durum) {
+        var control = drawControls.polygon;
+        if(durum==true){
+            control.activate();
+        }else{
+            control.deactivate();
+        }
+    }
+
+    polygonCiz(true);
+
+    var yenikutu = false;
+
+    function  deneme() {
+        var features = map.getLayersByName("Polygon Layer")[0].features[0];
+        var geometry = features.geometry;
+        var bbox = geometry.bounds;
+        var coordinates = geometry.components[0].components;
+        var geojson = {type:"Feature",properties:{},geometry:{type:"Polygon",coordinates:[[]]}};
+        for(i in coordinates){
+            geojson.geometry.coordinates[0].push([coordinates[i].x,coordinates[i].y]);
+        }
+        debugger;
+        var options = {
+            uzunKenar:5,
+            kisaKenar:3,
+            uzunKenarAraligi:2,
+            kisaKenarAraligi:2,
+            donuklukAcisi:45,
+            disariTasma:false,
+            map:map,
+            addMap:true,
+            databaseInfo:{
+                tableName:"mezarlar",
+                geometryField:"geoloc",
+                srid:"4326"
+            }
+        };
+        yenikutu = new fillBox(geojson,options);
+    }
+
+    function geojsonindir() {
+        yenikutu.getResultGeojsonFile();
+    }
+    function  sqlindir() {
+        yenikutu.getMsSQLFile();
+    }
+</script>
