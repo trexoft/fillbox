@@ -74,12 +74,12 @@
             var geojson = features.Poly[0].toGeoJSON();
 
             var options = {
-                uzunKenar:25,
-                kisaKenar:15,
-                uzunKenarAraligi:10,
-                kisaKenarAraligi:10,
-                donuklukAcisi:45,
-                disariTasma:false,
+                longEdge:25,
+                shortEdge:15,
+                longEdgeOffset:10,
+                shortEdgeOffset:10,
+                rotateAngel:45,
+                intersection:false,
                 library:"leaflet",
                 map:map,
                 addMap:true,
