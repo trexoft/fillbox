@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="src/css/style.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -14,17 +14,17 @@
     <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
     <script src="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.min.js"></script>
     <script src="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.min.js"></script>
-    <script src="harita.js"></script>
-    <script src="download.js"></script>
+    <script src="src/js/harita.js"></script>
+    <script src="src/js/download.js"></script>
 
 
 </head>
 <body>
 <div  id="map"></div>
 <div class="buton1">
-    <input type="button" value="Doldur" onclick="doldur();">
-    <input type="button" value="GeoJSON İNDİR" onclick="geojsonindir();">
-    <input type="button" value="MsSQL İNDİR" onclick="sqlindir();">
+    <input type="button" value="Fill Box Polygon Area" onclick="fillBoxButton();">
+    <input type="button" value="Download GeoJSON" onclick="geojsonindir();">
+    <input type="button" value="Download MsSQL" onclick="sqlindir();">
 </div>
 </body>
 </html>
@@ -68,16 +68,16 @@
         features[tip].push(f);
     });
 
-    function doldur(){
+    function fillBoxButton(){
         if(features.Poly.length>0){
 
             var geojson = features.Poly[0].toGeoJSON();
 
             var options = {
-                uzunKenar:5,
-                kisaKenar:3,
-                uzunKenarAraligi:2,
-                kisaKenarAraligi:2,
+                uzunKenar:25,
+                kisaKenar:15,
+                uzunKenarAraligi:10,
+                kisaKenarAraligi:10,
                 donuklukAcisi:45,
                 disariTasma:false,
                 library:"leaflet",
@@ -89,7 +89,6 @@
                     srid:"4326"
                 }
             };
-            debugger;
             yenikutu = new fillBox(geojson,options);
         }else{
             alert("Please Draw a Polygon");
@@ -98,19 +97,38 @@
     }
 
     function geojsonindir() {
-        if(yenikutu!==false && yenikutu.resultBox.features.length>0){
-            yenikutu.getResultGeojsonFile();
+        if(yenikutu!==false){
+            if(yenikutu.resultBox.features.length>0){
+                yenikutu.getResultGeojsonFile();
+            }else{
+                fillBoxButton();
+                yenikutu.getResultGeojsonFile();
+            }
         }else{
-            alert("Please Draw a Polygon and press The Button");
+            if(features.Poly.length>0){
+                fillBoxButton();
+                yenikutu.getResultGeojsonFile();
+            }else{
+                alert("Please Draw a Polygon and press The Button");
+            }
         }
-
     }
     function  sqlindir() {
-        if(yenikutu!==false && yenikutu.resultBox.features.length>0){
-            yenikutu.getMsSQLFile();
+        if(yenikutu!==false){
+            if(yenikutu.resultBox.features.length>0){
+                yenikutu.getMsSQLFile();
+            }else{
+                fillBoxButton();
+                yenikutu.getMsSQLFile();
+            }
         }else{
-            alert("Please Draw a Polygon and press The Button");
+            if(features.Poly.length>0){
+                fillBoxButton();
+                yenikutu.getMsSQLFile();
+            }else{
+                alert("Please Draw a Polygon and press The Button");
+            }
         }
     }
 </script>
-<script src="fillBox.js"></script>
+<script src="src/js/fillBox.js"></script>

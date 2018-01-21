@@ -8,23 +8,23 @@
     <title>Draw Feature Example</title>
 
     <link rel="stylesheet" href="http://dev.openlayers.org/theme/default/style.css" type="text/css">
-    <link rel="stylesheet" href="style.css" type="text/css">
+    <link rel="stylesheet" href="src/css/style.css" type="text/css">
     <script src="http://dev.openlayers.org/OpenLayers.js"></script>
     <script src="https://npmcdn.com/@turf/turf/turf.js"></script>
-    <script src="harita.js"></script>
-    <script src="download.js"></script>
+    <script src="src/js/harita.js"></script>
+    <script src="src/js/download.js"></script>
 
 </head>
 <body >
 <div id="map"></div>
 <div class="buton1">
-    <input type="button" value="Doldur" onclick="deneme();">
-    <input type="button" value="GeoJSON İNDİR" onclick="geojsonindir();">
-    <input type="button" value="MsSQL İNDİR" onclick="sqlindir();">
+    <input type="button" value="Fill Box Polygon Area" onclick="fillBoxButton();">
+    <input type="button" value="Download GeoJSON" onclick="geojsonindir();">
+    <input type="button" value="Download MsSQL" onclick="sqlindir();">
 </div>
 </body>
 </html>
-<script src="fillBox.js"></script>
+<script src="src/js/fillBox.js"></script>
 <script type="text/javascript">
     var map, drawControls;
 
@@ -66,7 +66,7 @@
 
     var yenikutu = false;
 
-    function  deneme() {
+    function  fillBoxButton() {
         var features = map.getLayersByName("Polygon Layer")[0].features[0];
         var geometry = features.geometry;
         var bbox = geometry.bounds;
@@ -77,10 +77,10 @@
         }
         debugger;
         var options = {
-            uzunKenar:5,
-            kisaKenar:3,
-            uzunKenarAraligi:2,
-            kisaKenarAraligi:2,
+            uzunKenar:50,
+            kisaKenar:30,
+            uzunKenarAraligi:20,
+            kisaKenarAraligi:20,
             donuklukAcisi:45,
             disariTasma:false,
             library:"openlayers2",
@@ -96,9 +96,40 @@
     }
 
     function geojsonindir() {
-        yenikutu.getResultGeojsonFile();
+        var polygons = map.getLayersByName("Polygon Layer")[0].features.length;
+
+        if(yenikutu!==false){
+            if(yenikutu.resultBox.features.length>0){
+                yenikutu.getResultGeojsonFile();
+            }else{
+                fillBoxButton();
+                yenikutu.getResultGeojsonFile();
+            }
+        }else{
+            if(polygons>0){
+                fillBoxButton();
+                yenikutu.getResultGeojsonFile();
+            }else{
+                alert("Please Draw a Polygon and press The Button");
+            }
+        }
     }
     function  sqlindir() {
-        yenikutu.getMsSQLFile();
+        var polygons = map.getLayersByName("Polygon Layer")[0].features.length;
+        if(yenikutu!==false){
+            if(yenikutu.resultBox.features.length>0){
+                yenikutu.getMsSQLFile();
+            }else{
+                fillBoxButton();
+                yenikutu.getMsSQLFile();
+            }
+        }else{
+            if(polygons>0){
+                fillBoxButton();
+                yenikutu.getMsSQLFile();
+            }else{
+                alert("Please Draw a Polygon and press The Button");
+            }
+        }
     }
 </script>
