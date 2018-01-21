@@ -2,8 +2,11 @@
 
 This library produced for filling  the rectangles in a drawn polygon.
 
+![fillbox library](http://www.alikilic.org/fillbox/img.png)
+
 ### Demo Version ###
-[fillBox DEMO](http://www.alikilic.org/fillbox)
+* [**fillBox - Leaflet DEMO**](http://www.alikilic.org/fillbox/leaflet.html)
+* [**fillBox - Openlayers 2 DEMO**](http://www.alikilic.org/fillbox/openlayers2.html)
 
 ### What is this Library for? ###
 
@@ -83,4 +86,4 @@ newBox.getPostgreSQLFile();
 * [**harita.js**](http://www.alikilic.org/)
 
 ### Writed By ###
-* [**Ali KILIÇ - Gis Developer & Geomatics Engineer**](http://admin.alikilic.org/)
+* [**Ali KILIÇ - Gis Developer and Geodesy Engineer**](http://admin.alikilic.org/)
