@@ -8,6 +8,7 @@ function fillBox(polygon,options) {
     this.akisa = parseFloat(options["kisaKenarAraligi"]) || parseFloat(2);
     this.aci = parseFloat(options["donuklukAcisi"]) || parseFloat(45);
     this.disariTasma = options["disariTasma"]==false ? false:true;
+    this.library = options["library"] || "leaflet";
     this.merkez = false;
     this.cerceve = false;
     this.polygon = polygon;
@@ -31,7 +32,13 @@ fillBox.prototype.setup = function () {
     this.scanneBbox();
     this.rotateBox();
     if(this.addMap==true){
-        this.addOpenLayersMap();
+        if(this.library=="openlayers2"){
+            this.addOpenLayersMap();
+        }
+        if(this.library=="leaflet"){
+            this.addLeafletMap();
+        }
+
     }
     return this;
 };
@@ -94,6 +101,13 @@ fillBox.prototype.getResultBox = function () {
     }else{
         return false;
     }
+};
+
+fillBox.prototype.addLeafletMap = function(){
+    var geojsons  =this.resultBox;
+    L.geoJSON(geojsons, {
+        style: {color:"green"}
+    }).addTo(this.map);
 };
 
 fillBox.prototype.addOpenLayersMap = function () {

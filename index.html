@@ -14,16 +14,103 @@
     <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
     <script src="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.min.js"></script>
     <script src="https://unpkg.com/leaflet.pm@latest/dist/leaflet.pm.min.js"></script>
-    <script src="https://www.interaktifharita.com/js/harita.js"></script>
+    <script src="harita.js"></script>
+    <script src="download.js"></script>
 
 
 </head>
 <body>
 <div  id="map"></div>
 <div class="buton1">
-    <button onclick="doldur();">Doldur</button>
+    <input type="button" value="Doldur" onclick="doldur();">
+    <input type="button" value="GeoJSON İNDİR" onclick="geojsonindir();">
+    <input type="button" value="MsSQL İNDİR" onclick="sqlindir();">
 </div>
 </body>
 </html>
-<script src="mezar.js"></script>
-<script src="mezarlikDoldu.js"></script>
+<!--<script src="mezar.js"></script>-->
+<script>
+    var centerLng = 38.41893;
+    var centerLat = 27.12853;
+    var map = L.map('map').setView([centerLng,centerLat], 15);
+    var buffer = 0.04;
+    var collection = [];
+    var geojsonlist = [];
+    var yenikutu = false;
+
+    L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+        attribution: '<a style="color:#000" target="_blank" href="http://www.alikilic.org">Ali KILIÇ</a> | <a style="color:#000" href="mailto:alikilicharita@gmail.com">alikilicharita@gmail.com</a>'
+    }).addTo(map);
+
+    var features = {
+        Poly:[],
+        Rectangle:[],
+        Line:[],
+        Marker:[],
+        Circle:[]
+    };
+    var options = {
+        position: 'topright',
+        drawMarker: false,
+        drawPolyline: false,
+        drawRectangle: false,
+        drawPolygon: true,
+        drawCircle: false,
+        cutPolygon: false,
+        editMode: true,
+        removalMode: true
+    };
+    map.pm.addControls(options);
+
+    map.on('pm:create', function(e) {
+        var tip = e.shape;
+        var f = e.layer;
+        features[tip].push(f);
+    });
+
+    function doldur(){
+        if(features.Poly.length>0){
+
+            var geojson = features.Poly[0].toGeoJSON();
+
+            var options = {
+                uzunKenar:5,
+                kisaKenar:3,
+                uzunKenarAraligi:2,
+                kisaKenarAraligi:2,
+                donuklukAcisi:45,
+                disariTasma:false,
+                library:"leaflet",
+                map:map,
+                addMap:true,
+                databaseInfo:{
+                    tableName:"box",
+                    geometryField:"geoloc",
+                    srid:"4326"
+                }
+            };
+            debugger;
+            yenikutu = new fillBox(geojson,options);
+        }else{
+            alert("Please Draw a Polygon");
+        }
+
+    }
+
+    function geojsonindir() {
+        if(yenikutu!==false && yenikutu.resultBox.features.length>0){
+            yenikutu.getResultGeojsonFile();
+        }else{
+            alert("Please Draw a Polygon and press The Button");
+        }
+
+    }
+    function  sqlindir() {
+        if(yenikutu!==false && yenikutu.resultBox.features.length>0){
+            yenikutu.getMsSQLFile();
+        }else{
+            alert("Please Draw a Polygon and press The Button");
+        }
+    }
+</script>
+<script src="fillBox.js"></script>
