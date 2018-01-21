@@ -58,12 +58,12 @@ newBox.getPostgreSQLFile();
 
 * **longEdge** is the long side of the rectangle to be formed ( unit meters)
 * **shortEdge** is the shot side of the rectangle to be formed ( unit meters)
-* **longEdgeOffset** is the distance of the long side of the next rectangle to the next rectangle
-* **shortEdgeOffset** is the distance of the short side of the next rectangle to the next rectangle
+* **longEdgeOffset** the distinct between to long side of seperate rectangle 
+* **shortEdgeOffset** the distinct between to short side of seperate rectangle
 * **rotateAngel** is angle at which all rectangles should rotate collectively (unit degree)
-* **intersection** is Accepting rectangles intersecting the border of the polygon
+* **intersection** is Acceptance rectangles intersecting the border of the polygon
 * **library** is name of the map javascript library you are using (leaflet,openlayers2)
-* **map** is the map object you created var
+* **map** is the map object you created
 * **addMap** is for add your result box to map
 * **databaseInfo - tableName** is your database's table name
 * **databaseInfo - geometryField** is your database's table geometry filed name
