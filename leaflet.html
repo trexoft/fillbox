@@ -25,6 +25,8 @@
     <input type="button" value="Fill Box Polygon Area" onclick="fillBoxButton();">
     <input type="button" value="Download GeoJSON" onclick="geojsonindir();">
     <input type="button" value="Download MsSQL" onclick="sqlindir();">
+    <input type="button" value="Download Oracle SQL" onclick="oracleSQLDownload();">
+    <input type="button" value="Download Postgre SQL" onclick="postgreSQLDownload();">
 </div>
 </body>
 </html>
@@ -125,6 +127,42 @@
             if(features.Poly.length>0){
                 fillBoxButton();
                 yenikutu.getMsSQLFile();
+            }else{
+                alert("Please Draw a Polygon and press The Button");
+            }
+        }
+    }
+
+    function oracleSQLDownload(){
+        if(yenikutu!==false){
+            if(yenikutu.resultBox.features.length>0){
+                yenikutu.getOracleSQLFile();
+            }else{
+                fillBoxButton();
+                yenikutu.getOracleSQLFile();
+            }
+        }else{
+            if(features.Poly.length>0){
+                fillBoxButton();
+                yenikutu.getOracleSQLFile();
+            }else{
+                alert("Please Draw a Polygon and press The Button");
+            }
+        }
+    }
+
+    function postgreSQLDownload(){
+        if(yenikutu!==false){
+            if(yenikutu.resultBox.features.length>0){
+                yenikutu.getPostgreSQLFile();
+            }else{
+                fillBoxButton();
+                yenikutu.getPostgreSQLFile();
+            }
+        }else{
+            if(features.Poly.length>0){
+                fillBoxButton();
+                yenikutu.getPostgreSQLFile();
             }else{
                 alert("Please Draw a Polygon and press The Button");
             }

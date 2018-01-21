@@ -43,6 +43,67 @@ fillBox.prototype.setup = function () {
     return this;
 };
 
+fillBox.prototype.getOracleSQLFile = function(){
+    var db = this.databaseInfo;
+    var sql = 'INSERT ALL \n';
+    var data = this.resultBox.features;
+    if(data.length>0){
+        var a = 0;
+        for(i in data){
+            var feat = data[i].geometry.coordinates[0];
+            var wkt = '';
+            var b=0;
+            for(j in feat){
+                if(b==0){
+                    b++;
+                    wkt = feat[j][0]+' '+feat[j][1];
+                }else{
+                    wkt=wkt+', '+feat[j][0]+' '+feat[j][1];
+                }
+            }
+            wkt='POLYGON (('+wkt+'))';
+            if(a==0){
+                a++;
+                sql =sql + ' INTO '+db.tableName+' ('+db.geometryField+') VALUES  (ST_GeomFromText( \''+wkt+'\'))\n ';
+            }else{
+                sql =sql + ' INTO '+db.tableName+' ('+db.geometryField+') VALUES  (ST_GeomFromText( \''+wkt+'\'))\n ';
+            }
+        }
+        sql=sql+'SELECT * FROM dual;';
+        download(sql,'fillBoxOracleSQLResult.sql','text/sql');
+
+    }
+};
+
+fillBox.prototype.getPostgreSQLFile = function(){
+    var db = this.databaseInfo;
+    var sql = 'INSERT INTO '+db.tableName+' ('+db.geometryField+') VALUES ';
+    var data = this.resultBox.features;
+    if(data.length>0){
+        var a = 0;
+        for(i in data){
+            var feat = data[i].geometry.coordinates[0];
+            var wkt = '';
+            var b=0;
+            for(j in feat){
+                if(b==0){
+                    b++;
+                    wkt = feat[j][0]+' '+feat[j][1];
+                }else{
+                    wkt=wkt+', '+feat[j][0]+' '+feat[j][1];
+                }
+            }
+            wkt='POLYGON (('+wkt+'))';
+            if(a==0){
+                a++;
+                sql =sql + ' (ST_GeomFromText( \''+wkt+'\','+db.srid+')) ';
+            }else{
+                sql =sql + ',(ST_GeomFromText( \''+wkt+'\','+db.srid+')) ';
+            }
+        }
+        download(sql,'fillBoxPostgreSQLResult.sql','text/sql');
+    }
+};
 
 fillBox.prototype.getMsSQLFile = function () {
     var db = this.databaseInfo;
@@ -70,11 +131,8 @@ fillBox.prototype.getMsSQLFile = function () {
                 sql =sql + ',(geography::STGeomFromText( '+wkt+','+db.srid+')) ';
             }
         }
-        download(sql,'fillBoxSQLResult.sql','text/sql');
-
+        download(sql,'fillBoxMsSQLResult.sql','text/sql');
     }
-
-
 };
 
 fillBox.prototype.getResultGeojsonFile = function () {
