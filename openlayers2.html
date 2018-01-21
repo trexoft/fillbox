@@ -40,6 +40,14 @@
     map.addLayers([wmsLayer,polygonLayer]);
     map.addControl(new OpenLayers.Control.LayerSwitcher());
     map.addControl(new OpenLayers.Control.MousePosition());
+    map.events.register('zoomend', this, function (event) {
+        var x = map.getZoom();
+
+        if( x < 15)
+        {
+            map.zoomTo(15);
+        }
+    });
 
 
 

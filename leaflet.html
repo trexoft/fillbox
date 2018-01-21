@@ -32,7 +32,7 @@
 <script>
     var centerLng = 38.41893;
     var centerLat = 27.12853;
-    var map = L.map('map').setView([centerLng,centerLat], 15);
+    var map = L.map('map',{minZoom:15,maxZoom:16}).setView([centerLng,centerLat], 15);
     var buffer = 0.04;
     var collection = [];
     var geojsonlist = [];
@@ -40,6 +40,7 @@
 
     L.tileLayer('http://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
         attribution: '<a style="color:#000" target="_blank" href="http://www.alikilic.org">Ali KILIÇ</a> | <a style="color:#000" href="mailto:alikilicharita@gmail.com">alikilicharita@gmail.com</a>'
+
     }).addTo(map);
 
     var features = {
