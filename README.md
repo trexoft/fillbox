@@ -79,7 +79,7 @@ newBox.getPostgreSQLFile();
 
 ### Thank You ###
 
-* [**Leaflet**](http://leafletjs.com/)
+* [**Leaflet and PM**](http://leafletjs.com/)
 * [**Openlayers**](http://openlayers.org/)
 * [**Turf**](http://turfjs.org/)
 * [**Download.js**](http://danml.com/download.html)
