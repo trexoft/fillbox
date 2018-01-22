@@ -40,6 +40,7 @@ fillBox.prototype.setup = function () {
         }
 
     }
+	alert("Success !...");
     return this;
 };
 
@@ -126,9 +127,9 @@ fillBox.prototype.getMsSQLFile = function () {
             wkt='POLYGON (('+wkt+'))';
             if(a==0){
                 a++;
-                sql =sql + ' (geography::STGeomFromText( '+wkt+','+db.srid+')) ';
+                sql =sql + ' (geometry::STGeomFromText( \''+wkt+'\','+db.srid+')) ';
             }else{
-                sql =sql + ',(geography::STGeomFromText( '+wkt+','+db.srid+')) ';
+                sql =sql + ',(geometry::STGeomFromText( \''+wkt+'\','+db.srid+')) ';
             }
         }
         download(sql,'fillBoxMsSQLResult.sql','text/sql');
