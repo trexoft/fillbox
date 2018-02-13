@@ -2,11 +2,11 @@
 
 This library produced for filling  the rectangles in a drawn polygon.
 
-![fillbox library](http://www.alikilic.org/fillbox/img.png)
+![fillbox library](http://www.alikilic.org/fillbox2/img.png)
 
 ### Demo Version ###
-* [**fillBox - Leaflet DEMO**](http://www.alikilic.org/fillbox/leaflet.html)
-* [**fillBox - Openlayers 2 DEMO**](http://www.alikilic.org/fillbox/openlayers2.html)
+* [**fillBox - Leaflet DEMO**](http://www.alikilic.org/fillbox2/leaflet.html)
+* [**fillBox - Openlayers 2 DEMO**](http://www.alikilic.org/fillbox2/openlayers2.html)
 
 ### What is this Library for? ###
 
